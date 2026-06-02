@@ -1,0 +1,9 @@
+
+body{margin:0;background:#0F0F0F;color:#fff;font-family:Inter,Arial,sans-serif}
+.nav{position:sticky;top:0;display:flex;justify-content:space-between;padding:18px 40px;background:rgba(0,0,0,.7);backdrop-filter:blur(15px)}
+.menu a{color:#fff;text-decoration:none;margin:0 10px}
+.hero{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.hero h1{font-size:80px}.hero span{color:#FF4D8D}
+button{background:#FF4D8D;color:#fff;border:0;padding:14px 28px;border-radius:999px}
+.section{padding:100px 10%}
+.chatbot{position:fixed;bottom:20px;right:20px;background:#18181B;padding:15px;border-radius:16px}

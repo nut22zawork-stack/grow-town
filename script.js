@@ -1,0 +1,1 @@
+console.log('Grow Town Loaded');
