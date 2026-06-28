@@ -261,6 +261,63 @@ input,select,textarea{font-family:inherit}
 .slot-remove{background:rgba(255,59,48,.12);color:var(--red);border:none;border-radius:var(--r-xs);width:28px;height:28px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
 .slot-remove:hover{background:rgba(255,59,48,.25)}
 .slot-add-hint{font-size:11px;color:var(--text3);text-align:center;padding:6px 0}
+
+/* DETAIL POPUP */
+.detail-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1050;
+  display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.detail-overlay.show{opacity:1;pointer-events:all}
+.detail-card{
+  background:var(--surface);border-radius:20px;
+  width:340px;max-width:92vw;max-height:88vh;overflow-y:auto;
+  box-shadow:var(--shadow-lg);
+  transform:scale(.92) translateY(12px);
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.detail-overlay.show .detail-card{transform:scale(1) translateY(0)}
+.detail-header{
+  border-radius:20px 20px 0 0;padding:22px 20px 16px;position:relative;
+}
+.detail-close{
+  position:absolute;top:14px;right:14px;
+  width:28px;height:28px;border-radius:50%;
+  background:rgba(0,0,0,.18);border:none;color:#fff;font-size:15px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .2s;line-height:1;
+}
+.detail-close:hover{background:rgba(0,0,0,.35)}
+.detail-cat-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,.22);border-radius:20px;
+  padding:3px 10px;font-size:11px;font-weight:600;color:#fff;
+  margin-bottom:8px;
+}
+.detail-title{font-size:20px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:4px}
+.detail-imp-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(255,149,0,.9);border-radius:20px;
+  padding:2px 10px;font-size:11px;font-weight:600;color:#fff;margin-top:4px;
+}
+.detail-body{padding:18px 20px 20px}
+.detail-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:13px}
+.detail-row-icon{font-size:16px;margin-top:1px;flex-shrink:0;width:22px;text-align:center}
+.detail-row-label{font-size:11px;color:var(--text3);font-weight:500;margin-bottom:1px}
+.detail-row-val{font-size:14px;color:var(--text);font-weight:500}
+.detail-divider{height:1px;background:var(--border);margin:4px 0 14px}
+.detail-actions{display:flex;gap:8px;padding:0 20px 20px}
+.detail-btn-edit{
+  flex:1;background:var(--grad);color:#fff;border:none;border-radius:var(--r-sm);
+  padding:12px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.detail-btn-edit:hover{opacity:.9;transform:scale(1.01)}
+.detail-btn-del{
+  background:rgba(255,59,48,.1);color:var(--red);border:none;border-radius:var(--r-sm);
+  padding:12px 16px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;
+}
+.detail-btn-del:hover{background:rgba(255,59,48,.2)}
 .empty-up{color:var(--text3);font-size:12px;text-align:center;padding:12px 0}
 
 @media(max-width:900px){.sidebar{display:none}}
@@ -270,6 +327,7 @@ input,select,textarea{font-family:inherit}
   .search-wrap{display:none}
 }
 </style>
+<script src="data.js"></script>
 </head>
 <body>
 
@@ -441,6 +499,41 @@ input,select,textarea{font-family:inherit}
   </div>
 </div>
 
+<!-- DETAIL POPUP -->
+<div class="detail-overlay" id="detailOverlay" onclick="closeDetailIfBg(event)">
+  <div class="detail-card" id="detailCard">
+    <div class="detail-header" id="detailHeader">
+      <button class="detail-close" onclick="closeDetail()">✕</button>
+      <div class="detail-cat-badge" id="detailCat"></div>
+      <div class="detail-title" id="detailTitle"></div>
+      <div id="detailImpBadge" style="display:none" class="detail-imp-badge">⭐ รายการสำคัญ</div>
+    </div>
+    <div class="detail-body">
+      <div class="detail-row">
+        <div class="detail-row-icon">📅</div>
+        <div><div class="detail-row-label">วันที่</div><div class="detail-row-val" id="detailDate"></div></div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-row-icon">🕐</div>
+        <div><div class="detail-row-label">เวลา</div><div class="detail-row-val" id="detailTime"></div></div>
+      </div>
+      <div id="detailNotifRow" class="detail-row" style="display:none">
+        <div class="detail-row-icon">🔔</div>
+        <div><div class="detail-row-label">แจ้งเตือนล่วงหน้า</div><div class="detail-row-val" id="detailNotif"></div></div>
+      </div>
+      <div id="detailDescRow" class="detail-row" style="display:none">
+        <div class="detail-row-icon">📝</div>
+        <div><div class="detail-row-label">รายละเอียด</div><div class="detail-row-val" id="detailDesc"></div></div>
+      </div>
+    </div>
+    <div class="detail-divider" style="margin:0 20px"></div>
+    <div class="detail-actions">
+      <button class="detail-btn-edit" onclick="detailToEdit()">✏️ แก้ไข</button>
+      <button class="detail-btn-del"  onclick="detailDelete()">🗑️</button>
+    </div>
+  </div>
+</div>
+
 <!-- CONFIRM DELETE -->
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
@@ -484,19 +577,14 @@ let calDate     = new Date();
 let weekStart   = getMondayOf(new Date());
 let filterCat   = null;
 let deleteTarget= null;
+let detailId    = null;
 let notifEnabled= true;
 let notifIntervalId = null;
 let alreadyNotified = {}; // key: evId_type -> timestamp
 
 /* ═══════════════════════════════════════════
-   AUTH / USER STORAGE
+   AUTH / USER STORAGE  →  ดูใน data.js
 ═══════════════════════════════════════════ */
-function getUsers()           { try { return JSON.parse(localStorage.getItem('sched_users')||'{}'); } catch(e) { return {}; } }
-function saveUsers(u)         { localStorage.setItem('sched_users', JSON.stringify(u)); }
-function userKey(u)           { return 'sched_events_' + u; }
-function loadUserEvents(u)    { try { const d = localStorage.getItem(userKey(u)); return d ? JSON.parse(d) : null; } catch(e) { return null; } }
-function saveUserEvents(u, ev){ localStorage.setItem(userKey(u), JSON.stringify(ev)); }
-
 function switchTab(t) {
   document.getElementById('loginForm').style.display    = t==='login'    ? '' : 'none';
   document.getElementById('registerForm').style.display = t==='register' ? '' : 'none';
@@ -508,7 +596,7 @@ function switchTab(t) {
 }
 
 function renderExistingUsers() {
-  const users = getUsers();
+  const users = DB_getUsers();
   const names = Object.keys(users);
   const wrap  = document.getElementById('existingUsers');
   if (!names.length) { wrap.innerHTML = ''; return; }
@@ -526,9 +614,8 @@ function doLogin() {
   const p = document.getElementById('loginPass').value;
   const err = document.getElementById('loginErr');
   if (!u || !p) { err.textContent = 'กรุณากรอกชื่อผู้ใช้และรหัสผ่าน'; return; }
-  const users = getUsers();
-  if (!users[u]) { err.textContent = 'ไม่พบชื่อผู้ใช้นี้'; return; }
-  if (users[u].pass !== btoa(p)) { err.textContent = 'รหัสผ่านไม่ถูกต้อง'; return; }
+  const loginErr = DB_login(u, p);
+  if (loginErr) { err.textContent = loginErr; return; }
   loginAs(u);
 }
 
@@ -537,21 +624,16 @@ function doRegister() {
   const p  = document.getElementById('regPass').value;
   const p2 = document.getElementById('regPass2').value;
   const err = document.getElementById('regErr');
-  if (!u) { err.textContent = 'กรุณากรอกชื่อผู้ใช้'; return; }
-  if (p.length < 4) { err.textContent = 'รหัสผ่านต้องมีอย่างน้อย 4 ตัว'; return; }
   if (p !== p2) { err.textContent = 'รหัสผ่านไม่ตรงกัน'; return; }
-  const users = getUsers();
-  if (users[u]) { err.textContent = 'ชื่อผู้ใช้นี้ถูกใช้แล้ว'; return; }
-  users[u] = { pass: btoa(p), created: Date.now() };
-  saveUsers(users);
+  const regErr = DB_register(u, p);
+  if (regErr) { err.textContent = regErr; return; }
   loginAs(u);
 }
 
 function loginAs(u) {
   currentUser = u;
-  localStorage.setItem('sched_session', u);
-  // load events
-  const saved = loadUserEvents(u);
+  DB_setSession(u);
+  const saved = DB_loadEvents(u);
   if (saved) { events = saved; }
   else { initSamples(); }
 
@@ -568,7 +650,7 @@ function loginAs(u) {
 function doLogout() {
   if (!confirm('ออกจากระบบ?')) return;
   currentUser = null;
-  localStorage.removeItem('sched_session');
+  DB_setSession(null);
   events = [];
   if (notifIntervalId) clearInterval(notifIntervalId);
   document.getElementById('appShell').style.display    = 'none';
@@ -586,8 +668,9 @@ function getMondayOf(d) {
   const day = new Date(d); const dow = day.getDay();
   day.setDate(day.getDate() - (dow === 0 ? 6 : dow - 1)); day.setHours(0,0,0,0); return day;
 }
+function parseDate(s)  { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
 function addDays(d, n) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
-function fmt(d)         { return d.toISOString().split('T')[0]; }
+function fmt(d)         { return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function fmtTime(s)     { if (!s) return ''; const [h,m] = s.split(':'); return `${parseInt(h)}:${m}`; }
 function parseMin(s)    { if (!s) return 0; const [h,m] = s.split(':').map(Number); return h*60+m; }
 function uid()          { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
@@ -621,7 +704,7 @@ function initSamples() {
 
 function save() {
   if (!currentUser) return;
-  saveUserEvents(currentUser, events);
+  DB_saveEvents(currentUser, events);
 }
 
 /* ═══════════════════════════════════════════
@@ -763,7 +846,7 @@ function renderMiniCal() {
 }
 function prevMonth() { calDate.setMonth(calDate.getMonth()-1); renderMiniCal(); }
 function nextMonth() { calDate.setMonth(calDate.getMonth()+1); renderMiniCal(); }
-function jumpToDate(ds) { weekStart = getMondayOf(new Date(ds)); renderAll(); scrollToNow(); }
+function jumpToDate(ds) { weekStart = getMondayOf(parseDate(ds)); renderAll(); scrollToNow(); }
 
 function renderSidebar() {
   let html = `<div class="cat-item${!filterCat?' active':''}" onclick="setCat(null)">
@@ -787,7 +870,7 @@ function renderSidebar() {
   if (!upcoming.length) { document.getElementById('upcomingList').innerHTML=`<div class="empty-up">ไม่มีกิจกรรมที่จะมาถึง</div>`; return; }
   document.getElementById('upcomingList').innerHTML = upcoming.map(ev => {
     const cat = CATS.find(c=>c.id===ev.cat)||CATS[4];
-    return `<div class="upcoming-item" style="border-left-color:${ev.color}" onclick='openEdit("${ev.id}")'>
+    return `<div class="upcoming-item" style="border-left-color:${ev.color}" onclick='openDetail("${ev.id}")'>
       <div class="upcoming-item-title">${cat.icon} ${ev.title}${ev.important?' <span class="star-badge">⭐</span>':''}</div>
       <div class="upcoming-item-time">${ev.date} · ${fmtTime(ev.start)}–${fmtTime(ev.end)}</div>
     </div>`;
@@ -841,7 +924,7 @@ function renderWeek() {
       const fg    = bright>150?'rgba(0,0,0,.85)':'#fff';
       const impCls= ev.important?' important-event':'';
       dgHtml += `<div class="event-block${impCls}" style="top:${topPx}px;height:${hPx}px;background:${ev.color};color:${fg}"
-        onclick='openEdit("${ev.id}");event.stopPropagation()'>
+        onclick='openDetail("${ev.id}");event.stopPropagation()'>
         <div class="event-title">${ev.important?'⭐ ':''}${cat.icon} ${ev.title}</div>
         <div class="event-time">${fmtTime(ev.start)}–${fmtTime(ev.end)}</div>
       </div>`;
@@ -957,6 +1040,69 @@ function openEdit(id) {
   showModal();
 }
 
+/* ═══════════════════════════════════════════
+   DETAIL POPUP – แสดงข้อมูลรายการที่เลือก
+   (กดรายการในตาราง/sidebar → เปิดหน้านี้ก่อน
+    แล้วเลือกแก้ไข ✏️ หรือ ลบ 🗑️ จากในนี้)
+═══════════════════════════════════════════ */
+function openDetail(id) {
+  const ev = events.find(e=>e.id===id); if (!ev) return;
+  detailId = id;
+  const cat = CATS.find(c=>c.id===ev.cat) || CATS[4];
+
+  document.getElementById('detailHeader').style.background = ev.color || 'var(--accent)';
+  document.getElementById('detailCat').innerHTML     = `${cat.icon} ${cat.label}`;
+  document.getElementById('detailTitle').textContent = ev.title;
+  document.getElementById('detailImpBadge').style.display = ev.important ? '' : 'none';
+
+  const d = parseDate(ev.date);
+  document.getElementById('detailDate').textContent =
+    `${DAY_FULL[d.getDay()]} ${d.getDate()} ${MONTHS_TH[d.getMonth()]} ${d.getFullYear()+543}`;
+  document.getElementById('detailTime').textContent =
+    `${fmtTime(ev.start)} – ${fmtTime(ev.end)} น.`;
+
+  const notifRow = document.getElementById('detailNotifRow');
+  if (ev.important) {
+    document.getElementById('detailNotif').textContent = `${ev.notifyBefore || 15} นาทีก่อนเริ่ม`;
+    notifRow.style.display = '';
+  } else {
+    notifRow.style.display = 'none';
+  }
+
+  const descRow = document.getElementById('detailDescRow');
+  if (ev.desc && ev.desc.trim()) {
+    document.getElementById('detailDesc').textContent = ev.desc;
+    descRow.style.display = '';
+  } else {
+    descRow.style.display = 'none';
+  }
+
+  document.getElementById('detailOverlay').classList.add('show');
+}
+
+function closeDetail() {
+  document.getElementById('detailOverlay').classList.remove('show');
+  detailId = null;
+}
+
+function closeDetailIfBg(e) {
+  if (e.target === document.getElementById('detailOverlay')) closeDetail();
+}
+
+/** จากหน้า detail → ไปหน้าแก้ไข */
+function detailToEdit() {
+  const id = detailId;
+  closeDetail();
+  openEdit(id);
+}
+
+/** จากหน้า detail → ลบรายการ (ใช้กล่องยืนยันเดิม) */
+function detailDelete() {
+  deleteTarget = detailId;
+  closeDetail();
+  document.getElementById('confirmOverlay').classList.add('show');
+}
+
 function renderCatSelect(sel) {
   document.getElementById('catSelect').innerHTML = CATS.map(c =>
     `<div class="cat-option${c.id===sel?' selected':''}" onclick="pickCat('${c.id}')">${c.icon}<br><span style="font-size:10px">${c.label}</span></div>`
@@ -1051,8 +1197,8 @@ function toggleSearch() {
 ═══════════════════════════════════════════ */
 (function init() {
   // Restore session
-  const saved = localStorage.getItem('sched_session');
-  if (saved && getUsers()[saved]) {
+  const saved = DB_getSession();
+  if (saved) {
     loginAs(saved);
   } else {
     renderExistingUsers();
