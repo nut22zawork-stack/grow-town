@@ -31,6 +31,43 @@ body{background:var(--bg);color:var(--text);font-size:15px;line-height:1.5;heigh
 button{font-family:inherit;cursor:pointer;border:none;outline:none}
 input,select,textarea{font-family:inherit}
 
+/* ── LOGIN SCREEN ── */
+#loginScreen{
+  position:fixed;inset:0;background:var(--bg);z-index:9000;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:0;
+}
+.login-card{
+  background:var(--surface);border-radius:20px;padding:36px 32px;
+  width:360px;max-width:90vw;box-shadow:var(--shadow-lg);
+  display:flex;flex-direction:column;gap:18px;
+}
+.login-logo{font-size:40px;text-align:center}
+.login-title{font-size:22px;font-weight:700;text-align:center;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.login-subtitle{font-size:13px;color:var(--text2);text-align:center;margin-top:-10px}
+.login-tabs{display:flex;gap:6px;background:var(--surface2);border-radius:var(--r-sm);padding:4px}
+.login-tab{flex:1;padding:8px;border-radius:var(--r-xs);font-size:13px;font-weight:500;color:var(--text2);background:none;border:none;cursor:pointer;transition:all .2s}
+.login-tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.login-input{
+  width:100%;background:var(--surface2);border:1.5px solid var(--border);
+  border-radius:var(--r-sm);padding:11px 14px;font-size:14px;color:var(--text);outline:none;transition:all .2s;
+}
+.login-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,122,255,.15)}
+.login-btn{
+  background:var(--grad);color:#fff;border:none;border-radius:var(--r-sm);
+  padding:13px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;
+}
+.login-btn:hover{opacity:.9;transform:scale(1.01)}
+.login-err{font-size:12px;color:var(--red);text-align:center;min-height:16px}
+.login-users{margin-top:4px}
+.login-users-title{font-size:11px;color:var(--text3);margin-bottom:8px;font-weight:500;letter-spacing:.5px;text-transform:uppercase}
+.user-chip{
+  display:inline-flex;align-items:center;gap:6px;padding:5px 11px;
+  background:var(--surface2);border-radius:20px;font-size:12px;color:var(--text2);
+  cursor:pointer;margin:3px;border:1.5px solid var(--border);transition:all .2s;
+}
+.user-chip:hover{border-color:var(--accent);color:var(--accent)}
+
 /* HEADER */
 .header{
   background:var(--surface);border-bottom:1px solid var(--border);
@@ -46,6 +83,16 @@ input,select,textarea{font-family:inherit}
   color:var(--text2);font-size:17px;transition:all .2s;cursor:pointer;border:none;
 }
 .icon-btn:hover{background:var(--surface3);transform:scale(1.05)}
+.user-badge{
+  display:flex;align-items:center;gap:7px;padding:5px 12px;
+  background:var(--surface2);border-radius:20px;font-size:13px;font-weight:500;
+  cursor:pointer;transition:all .2s;border:1.5px solid var(--border);
+}
+.user-badge:hover{border-color:var(--accent)}
+.user-avatar{
+  width:24px;height:24px;border-radius:50%;background:var(--grad);
+  display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:600;
+}
 
 /* MAIN LAYOUT */
 .main{display:flex;flex:1;overflow:hidden}
@@ -60,172 +107,86 @@ input,select,textarea{font-family:inherit}
   font-size:11px;font-weight:600;color:var(--text3);
   letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px;
 }
-
-/* MINI CALENDAR */
 .mini-cal{background:var(--surface2);border-radius:var(--r);padding:14px}
 .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .cal-title{font-size:13px;font-weight:600}
-.cal-nav{
-  background:none;border:none;color:var(--text2);font-size:16px;
-  padding:2px 8px;cursor:pointer;border-radius:var(--r-xs);transition:background .2s;
-}
+.cal-nav{background:none;border:none;color:var(--text2);font-size:16px;padding:2px 8px;cursor:pointer;border-radius:var(--r-xs);transition:background .2s}
 .cal-nav:hover{background:var(--surface3)}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
 .cal-day-label{font-size:10px;font-weight:500;color:var(--text3);text-align:center;padding:3px 0}
-.cal-day{
-  font-size:11px;text-align:center;padding:4px 1px;
-  border-radius:50%;cursor:pointer;transition:all .2s;
-  display:flex;align-items:center;justify-content:center;flex-direction:column;
-  gap:1px;line-height:1;aspect-ratio:1;
-}
+.cal-day{font-size:11px;text-align:center;padding:4px 1px;border-radius:50%;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1px;line-height:1;aspect-ratio:1}
 .cal-day:hover{background:var(--surface3)}
 .cal-day.today{background:var(--accent);color:#fff;font-weight:600}
-.cal-day.has-events::after{
-  content:'';display:block;width:3px;height:3px;border-radius:50%;
-  background:var(--accent);flex-shrink:0;
-}
+.cal-day.has-events::after{content:'';display:block;width:3px;height:3px;border-radius:50%;background:var(--accent);flex-shrink:0}
 .cal-day.today.has-events::after{background:#fff}
 .cal-day.other-month{color:var(--text3)}
-
-/* CAT FILTER */
 .cat-list{display:flex;flex-direction:column;gap:4px}
-.cat-item{
-  display:flex;align-items:center;gap:8px;padding:7px 10px;
-  border-radius:var(--r-xs);cursor:pointer;font-size:13px;transition:all .2s;
-}
+.cat-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:var(--r-xs);cursor:pointer;font-size:13px;transition:all .2s}
 .cat-item:hover{background:var(--surface2)}
 .cat-item.active{background:var(--surface2);font-weight:500}
 .cat-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-.cat-count{
-  margin-left:auto;font-size:11px;color:var(--text3);
-  background:var(--surface3);padding:1px 6px;border-radius:20px;
-}
-
-/* UPCOMING */
+.cat-count{margin-left:auto;font-size:11px;color:var(--text3);background:var(--surface3);padding:1px 6px;border-radius:20px}
 .upcoming-list{display:flex;flex-direction:column;gap:7px}
-.upcoming-item{
-  background:var(--surface2);border-radius:var(--r-sm);padding:9px 11px;
-  cursor:pointer;transition:all .2s;border-left:3px solid var(--accent);
-}
+.upcoming-item{background:var(--surface2);border-radius:var(--r-sm);padding:9px 11px;cursor:pointer;transition:all .2s;border-left:3px solid var(--accent)}
 .upcoming-item:hover{transform:translateX(2px);box-shadow:var(--shadow)}
-.upcoming-item-title{font-size:12px;font-weight:500;margin-bottom:1px}
+.upcoming-item-title{font-size:12px;font-weight:500;margin-bottom:1px;display:flex;align-items:center;gap:4px}
 .upcoming-item-time{font-size:10px;color:var(--text2)}
+.star-badge{font-size:10px}
 
 /* CONTENT */
 .content{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
-
-/* TOOLBAR */
-.week-toolbar{
-  display:flex;align-items:center;gap:10px;padding:12px 20px;
-  background:var(--surface);border-bottom:1px solid var(--border);
-  flex-shrink:0;flex-wrap:wrap;
-}
+.week-toolbar{display:flex;align-items:center;gap:10px;padding:12px 20px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
 .week-nav{display:flex;align-items:center;gap:6px}
-.week-nav button{
-  background:var(--surface2);border:1px solid var(--border);
-  border-radius:var(--r-xs);padding:6px 13px;font-size:14px;
-  font-weight:500;color:var(--text);cursor:pointer;transition:all .2s;
-}
+.week-nav button{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-xs);padding:6px 13px;font-size:14px;font-weight:500;color:var(--text);cursor:pointer;transition:all .2s}
 .week-nav button:hover{background:var(--surface3)}
 .week-label{font-size:15px;font-weight:600;min-width:150px;text-align:center}
-.today-btn{
-  background:var(--grad);color:#fff;border:none;border-radius:var(--r-xs);
-  padding:6px 14px;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;
-}
+.today-btn{background:var(--grad);color:#fff;border:none;border-radius:var(--r-xs);padding:6px 14px;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
 .today-btn:hover{opacity:.9;transform:scale(1.02)}
 .search-wrap{position:relative}
 .search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none;font-size:13px}
-.search-input{
-  background:var(--surface2);border:1px solid var(--border);border-radius:20px;
-  padding:6px 14px 6px 30px;font-size:13px;width:160px;color:var(--text);outline:none;transition:all .2s;
-}
+.search-input{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:6px 14px 6px 30px;font-size:13px;width:160px;color:var(--text);outline:none;transition:all .2s}
 .search-input:focus{background:var(--surface);border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,122,255,.15);width:200px}
-.add-btn{
-  background:var(--grad);color:#fff;border:none;border-radius:var(--r-sm);
-  padding:7px 16px;font-size:13px;font-weight:600;cursor:pointer;
-  display:flex;align-items:center;gap:5px;transition:all .2s;white-space:nowrap;margin-left:auto;
-}
+.add-btn{background:var(--grad);color:#fff;border:none;border-radius:var(--r-sm);padding:7px 16px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s;white-space:nowrap;margin-left:auto}
 .add-btn:hover{opacity:.9;transform:scale(1.02);box-shadow:0 4px 16px rgba(0,122,255,.3)}
-
-/* TIMETABLE SCROLL AREA */
 .timetable-scroll{flex:1;overflow:auto;position:relative}
-
-/* TIMETABLE */
 .timetable{display:flex;min-width:700px}
 .time-col{width:56px;flex-shrink:0;position:relative}
 .time-col-inner{position:relative}
-.time-label{
-  height:60px;display:flex;align-items:flex-start;justify-content:flex-end;
-  padding-right:8px;font-size:11px;color:var(--text3);padding-top:3px;
-  font-weight:500;position:relative;
-}
-.time-label::after{
-  content:'';position:absolute;right:0;top:0;width:6px;height:1px;background:var(--border);
-}
-/* sticky time header spacer */
+.time-label{height:60px;display:flex;align-items:flex-start;justify-content:flex-end;padding-right:8px;font-size:11px;color:var(--text3);padding-top:3px;font-weight:500;position:relative}
+.time-label::after{content:'';position:absolute;right:0;top:0;width:6px;height:1px;background:var(--border)}
 .time-header-spacer{height:52px;position:sticky;top:0;background:var(--surface);z-index:20;border-bottom:1px solid var(--border)}
-
 .days-grid{flex:1;display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
 .day-col{border-right:1px solid var(--border);position:relative}
 .day-col:last-child{border-right:none}
-.day-header{
-  height:52px;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;border-bottom:1px solid var(--border);gap:1px;
-  font-size:11px;color:var(--text2);font-weight:500;
-  position:sticky;top:0;background:var(--surface);z-index:20;
-}
+.day-header{height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-bottom:1px solid var(--border);gap:1px;font-size:11px;color:var(--text2);font-weight:500;position:sticky;top:0;background:var(--surface);z-index:20}
 .day-header.today-col{color:var(--accent)}
-.day-num{
-  font-size:16px;font-weight:700;line-height:1;
-  width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;
-}
+.day-num{font-size:16px;font-weight:700;line-height:1;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%}
 .day-header.today-col .day-num{background:var(--grad);color:#fff}
-
 .day-body{position:relative}
 .hour-line{position:absolute;left:0;right:0;height:1px;background:var(--border)}
-
-.event-block{
-  position:absolute;left:3px;right:3px;border-radius:var(--r-xs);
-  padding:4px 6px;cursor:pointer;overflow:hidden;transition:all .2s;z-index:5;
-  border-left:3px solid rgba(0,0,0,.15);
-}
+.event-block{position:absolute;left:3px;right:3px;border-radius:var(--r-xs);padding:4px 6px;cursor:pointer;overflow:hidden;transition:all .2s;z-index:5;border-left:3px solid rgba(0,0,0,.15)}
 .event-block:hover{filter:brightness(.93);transform:scale(1.02);box-shadow:var(--shadow-lg);z-index:20}
+.event-block.important-event{border-left:4px solid gold;box-shadow:0 0 0 1.5px gold}
 .event-title{font-size:11px;font-weight:600;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .event-time{font-size:10px;opacity:.8;line-height:1.2;margin-top:1px}
-
 .now-line{position:absolute;left:0;right:0;z-index:15;pointer-events:none}
 .now-line::before{content:'';position:absolute;left:0;top:-3px;width:7px;height:7px;border-radius:50%;background:var(--red)}
 .now-line::after{content:'';position:absolute;left:6px;right:0;top:0;height:1px;background:var(--red)}
 
 /* MODAL */
-.overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;
-  display:flex;align-items:flex-end;justify-content:center;
-  backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .3s;
-}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .3s}
 .overlay.show{opacity:1;pointer-events:all}
-.modal{
-  background:var(--surface);border-radius:var(--r) var(--r) 0 0;
-  width:100%;max-width:520px;padding:22px;max-height:90vh;overflow-y:auto;
-  transform:translateY(100%);transition:transform .35s cubic-bezier(.32,0,.67,0);
-}
+.modal{background:var(--surface);border-radius:var(--r) var(--r) 0 0;width:100%;max-width:520px;padding:22px;max-height:90vh;overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,0,.67,0)}
 .overlay.show .modal{transform:translateY(0);transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
 .modal-handle{width:36px;height:4px;background:var(--surface3);border-radius:2px;margin:0 auto 18px}
 .modal-title{font-size:18px;font-weight:700;margin-bottom:18px}
 .form-group{margin-bottom:14px}
 .form-label{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:5px;display:block}
-.form-input{
-  width:100%;background:var(--surface2);border:1px solid var(--border);
-  border-radius:var(--r-sm);padding:9px 13px;font-size:14px;color:var(--text);outline:none;transition:all .2s;
-}
+.form-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 13px;font-size:14px;color:var(--text);outline:none;transition:all .2s}
 .form-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,122,255,.15)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .cat-select{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
-.cat-option{
-  border:2px solid var(--border);border-radius:var(--r-xs);padding:7px 2px;
-  text-align:center;cursor:pointer;font-size:11px;font-weight:500;
-  transition:all .2s;color:var(--text2);
-}
+.cat-option{border:2px solid var(--border);border-radius:var(--r-xs);padding:7px 2px;text-align:center;cursor:pointer;font-size:11px;font-weight:500;transition:all .2s;color:var(--text2)}
 .cat-option.selected{border-color:var(--accent);background:rgba(0,122,255,.08);color:var(--accent)}
 .color-select{display:flex;gap:9px;flex-wrap:wrap}
 .color-dot{width:28px;height:28px;border-radius:50%;cursor:pointer;transition:all .2s;border:3px solid transparent}
@@ -238,18 +199,24 @@ input,select,textarea{font-family:inherit}
 .btn-cancel{background:var(--surface2);color:var(--text2);border:none;border-radius:var(--r-sm);padding:12px 16px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
 .btn-cancel:hover{background:var(--surface3)}
 
+/* important toggle */
+.important-toggle{display:flex;align-items:center;gap:10px;padding:10px 13px;background:var(--surface2);border-radius:var(--r-sm);cursor:pointer;user-select:none;transition:all .2s}
+.important-toggle:hover{background:var(--surface3)}
+.toggle-switch{width:42px;height:24px;border-radius:12px;background:var(--surface3);position:relative;transition:background .2s;flex-shrink:0}
+.toggle-switch.on{background:var(--orange)}
+.toggle-switch::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.toggle-switch.on::after{left:21px}
+.toggle-label{font-size:13px;font-weight:500}
+
+/* notify before */
+.notify-before-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px}
+.notify-chip{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;background:var(--surface2);color:var(--text2);cursor:pointer;border:1.5px solid var(--border);transition:all .2s}
+.notify-chip.selected{background:rgba(255,149,0,.12);color:var(--orange);border-color:var(--orange)}
+
 /* CONFIRM DIALOG */
-.confirm-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1100;
-  display:flex;align-items:center;justify-content:center;
-  backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s;
-}
+.confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1100;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s}
 .confirm-overlay.show{opacity:1;pointer-events:all}
-.confirm-box{
-  background:var(--surface);border-radius:var(--r);padding:26px;width:290px;text-align:center;
-  transform:scale(.92);transition:transform .3s cubic-bezier(.34,1.56,.64,1);
-  box-shadow:var(--shadow-lg);
-}
+.confirm-box{background:var(--surface);border-radius:var(--r);padding:26px;width:290px;text-align:center;transform:scale(.92);transition:transform .3s cubic-bezier(.34,1.56,.64,1);box-shadow:var(--shadow-lg)}
 .confirm-overlay.show .confirm-box{transform:scale(1)}
 .confirm-icon{font-size:38px;margin-bottom:10px}
 .confirm-title{font-size:16px;font-weight:700;margin-bottom:7px}
@@ -260,6 +227,28 @@ input,select,textarea{font-family:inherit}
 .confirm-btns .yes:hover{opacity:.85}
 .confirm-btns .no{background:var(--surface2);color:var(--text)}
 .confirm-btns .no:hover{background:var(--surface3)}
+
+/* NOTIFICATION TOAST */
+#notifContainer{position:fixed;top:16px;right:16px;z-index:5000;display:flex;flex-direction:column;gap:8px;max-width:340px}
+.notif-toast{
+  background:var(--surface);border-radius:var(--r);padding:14px 16px;
+  box-shadow:0 4px 24px rgba(0,0,0,.18);border-left:4px solid var(--orange);
+  display:flex;align-items:flex-start;gap:12px;
+  animation:slideIn .35s cubic-bezier(.34,1.56,.64,1);
+}
+.notif-toast.urgent{border-left-color:var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
+.notif-icon{font-size:22px;flex-shrink:0;margin-top:1px}
+.notif-body{flex:1;min-width:0}
+.notif-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+.notif-desc{font-size:11px;color:var(--text2)}
+.notif-close{background:none;border:none;color:var(--text3);font-size:16px;cursor:pointer;padding:0;flex-shrink:0;line-height:1;margin-top:2px}
+.notif-close:hover{color:var(--text)}
+
+/* notification toggle in header */
+.notif-badge{position:relative}
+.notif-dot{position:absolute;top:3px;right:3px;width:8px;height:8px;border-radius:50%;background:var(--red);border:2px solid var(--surface);display:none}
+.notif-dot.show{display:block}
 
 .empty-up{color:var(--text3);font-size:12px;text-align:center;padding:12px 0}
 
@@ -273,11 +262,62 @@ input,select,textarea{font-family:inherit}
 </head>
 <body>
 
+<!-- ════════ LOGIN SCREEN ════════ -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">📅</div>
+    <div class="login-title">My Schedule</div>
+    <div class="login-subtitle">ลงชื่อเข้าใช้เพื่อดูตารางของคุณ</div>
+
+    <div class="login-tabs">
+      <button class="login-tab active" id="tabLogin" onclick="switchTab('login')">เข้าสู่ระบบ</button>
+      <button class="login-tab" id="tabReg" onclick="switchTab('register')">สมัครสมาชิก</button>
+    </div>
+
+    <!-- Login -->
+    <div id="loginForm">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <input class="login-input" id="loginUser" placeholder="ชื่อผู้ใช้" autocomplete="username">
+        <input class="login-input" id="loginPass" type="password" placeholder="รหัสผ่าน" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <div class="login-err" id="loginErr"></div>
+      <button class="login-btn" onclick="doLogin()">เข้าสู่ระบบ</button>
+
+      <div class="login-users" id="existingUsers"></div>
+    </div>
+
+    <!-- Register -->
+    <div id="registerForm" style="display:none">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <input class="login-input" id="regUser" placeholder="ชื่อผู้ใช้ (ภาษาไทยหรืออังกฤษ)" autocomplete="username">
+        <input class="login-input" id="regPass" type="password" placeholder="รหัสผ่าน (อย่างน้อย 4 ตัว)" autocomplete="new-password">
+        <input class="login-input" id="regPass2" type="password" placeholder="ยืนยันรหัสผ่าน" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()">
+      </div>
+      <div class="login-err" id="regErr"></div>
+      <button class="login-btn" onclick="doRegister()">สมัครสมาชิก</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ APP ════════ -->
+<div id="appShell" style="display:none;flex-direction:column;height:100vh">
+
 <div class="header">
   <span class="logo">📅 My Schedule</span>
   <div class="header-right">
     <button class="icon-btn" onclick="toggleSearch()" title="ค้นหา">🔍</button>
+    <!-- notification bell -->
+    <div class="notif-badge">
+      <button class="icon-btn" id="notifToggleBtn" onclick="toggleNotif()" title="การแจ้งเตือน">🔔</button>
+      <div class="notif-dot" id="notifDot"></div>
+    </div>
     <button class="icon-btn" id="darkToggle" onclick="toggleDark()" title="Dark Mode">🌙</button>
+    <!-- user badge -->
+    <div class="user-badge" onclick="doLogout()" title="ออกจากระบบ">
+      <div class="user-avatar" id="userAvatar"></div>
+      <span id="userLabel" style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+      <span style="font-size:10px;color:var(--text3)">ออก</span>
+    </div>
   </div>
 </div>
 
@@ -320,20 +360,22 @@ input,select,textarea{font-family:inherit}
       <button class="add-btn" onclick="openAddModal()">+ เพิ่มกิจกรรม</button>
     </div>
 
-    <!-- SCROLLABLE TIMETABLE -->
     <div class="timetable-scroll" id="timetableScroll">
       <div class="timetable">
-        <!-- Time column -->
         <div class="time-col">
           <div class="time-header-spacer"></div>
           <div class="time-col-inner" id="timeCol"></div>
         </div>
-        <!-- Days grid -->
         <div class="days-grid" id="daysGrid"></div>
       </div>
     </div>
   </div>
 </div>
+
+</div><!-- end appShell -->
+
+<!-- NOTIFICATION CONTAINER -->
+<div id="notifContainer"></div>
 
 <!-- EVENT MODAL -->
 <div class="overlay" id="eventOverlay" onclick="closeIfOverlay(event)">
@@ -370,9 +412,23 @@ input,select,textarea{font-family:inherit}
       <label class="form-label">สีกิจกรรม</label>
       <div class="color-select" id="colorSelect"></div>
     </div>
+
+    <!-- ⭐ IMPORTANT -->
+    <div class="form-group">
+      <label class="form-label">รายการสำคัญ</label>
+      <div class="important-toggle" onclick="toggleImportant()">
+        <div class="toggle-switch" id="importantToggle"></div>
+        <span class="toggle-label" id="importantLabel">ทำเครื่องหมายเป็นรายการสำคัญ ⭐</span>
+      </div>
+      <div id="notifyBeforeWrap" style="display:none;margin-top:10px">
+        <div class="form-label" style="margin-bottom:6px">แจ้งเตือนล่วงหน้า</div>
+        <div class="notify-before-row" id="notifyBeforeRow"></div>
+      </div>
+    </div>
+
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal()">ยกเลิก</button>
-      <button class="btn-danger" id="deleteBtn" onclick="deleteCurrentEvent()" style="display:none">ลบ</button>
+      <button class="btn-danger" id="deleteBtn" onclick="deleteCurrentEvent()" style="display:none">🗑️ ลบ</button>
       <button class="btn-primary" onclick="saveEvent()">บันทึก</button>
     </div>
   </div>
@@ -392,37 +448,136 @@ input,select,textarea{font-family:inherit}
 </div>
 
 <script>
+/* ═══════════════════════════════════════════
+   CONSTANTS
+═══════════════════════════════════════════ */
 const CATS = [
-  {id:'study', label:'เรียน',   icon:'📘', color:'#007aff'},
-  {id:'tutor', label:'ติว',     icon:'📚', color:'#5856d6'},
-  {id:'work',  label:'งาน',     icon:'💼', color:'#ff9500'},
-  {id:'meet',  label:'นัดหมาย',icon:'🤝', color:'#34c759'},
-  {id:'other', label:'อื่น ๆ', icon:'🎯', color:'#af52de'},
+  {id:'study', label:'เรียน',    icon:'📘', color:'#007aff'},
+  {id:'tutor', label:'ติว',      icon:'📚', color:'#5856d6'},
+  {id:'work',  label:'งาน',      icon:'💼', color:'#ff9500'},
+  {id:'meet',  label:'นัดหมาย', icon:'🤝', color:'#34c759'},
+  {id:'other', label:'อื่น ๆ',  icon:'🎯', color:'#af52de'},
 ];
 const COLORS = ['#007aff','#5856d6','#34c759','#ff9500','#ff3b30','#af52de','#ff2d55','#30b0c7','#ff6b35','#1a1a2e'];
 const DAY_SHORT = ['อา','จ','อ','พ','พฤ','ศ','ส'];
 const DAY_FULL  = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
 const MONTHS_TH = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const NOTIFY_OPTIONS = [5, 10, 15, 30, 60]; // minutes before
+const HOUR_PX   = 64;
+const TOTAL_H   = 24;
+const VISIBLE_H = 8;
 
-// 8-hour visible window (in hours from midnight)
-const HOUR_PX   = 64;   // px per hour
-const VISIBLE_H = 8;    // hours shown in viewport
-const TOTAL_H   = 24;   // total hours rendered
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
+let currentUser = null;
+let events      = [];
+let editId      = null;
+let calDate     = new Date();
+let weekStart   = getMondayOf(new Date());
+let filterCat   = null;
+let deleteTarget= null;
+let notifEnabled= true;
+let notifIntervalId = null;
+let alreadyNotified = {}; // key: evId_type -> timestamp
 
-let events = [];
-let editId = null;
-let calDate = new Date();
-let weekStart = getMondayOf(new Date());
-let filterCat = null;
-let deleteTarget = null;
+/* ═══════════════════════════════════════════
+   AUTH / USER STORAGE
+═══════════════════════════════════════════ */
+function getUsers()           { try { return JSON.parse(localStorage.getItem('sched_users')||'{}'); } catch(e) { return {}; } }
+function saveUsers(u)         { localStorage.setItem('sched_users', JSON.stringify(u)); }
+function userKey(u)           { return 'sched_events_' + u; }
+function loadUserEvents(u)    { try { const d = localStorage.getItem(userKey(u)); return d ? JSON.parse(d) : null; } catch(e) { return null; } }
+function saveUserEvents(u, ev){ localStorage.setItem(userKey(u), JSON.stringify(ev)); }
 
-/* ── helpers ── */
+function switchTab(t) {
+  document.getElementById('loginForm').style.display    = t==='login'    ? '' : 'none';
+  document.getElementById('registerForm').style.display = t==='register' ? '' : 'none';
+  document.getElementById('tabLogin').classList.toggle('active', t==='login');
+  document.getElementById('tabReg').classList.toggle('active', t==='register');
+  document.getElementById('loginErr').textContent = '';
+  document.getElementById('regErr').textContent   = '';
+  renderExistingUsers();
+}
+
+function renderExistingUsers() {
+  const users = getUsers();
+  const names = Object.keys(users);
+  const wrap  = document.getElementById('existingUsers');
+  if (!names.length) { wrap.innerHTML = ''; return; }
+  wrap.innerHTML = `<div class="login-users-title">บัญชีที่มีอยู่</div>` +
+    names.map(n => `<span class="user-chip" onclick="quickLogin('${n}')">👤 ${n}</span>`).join('');
+}
+
+function quickLogin(name) {
+  document.getElementById('loginUser').value = name;
+  document.getElementById('loginPass').focus();
+}
+
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const err = document.getElementById('loginErr');
+  if (!u || !p) { err.textContent = 'กรุณากรอกชื่อผู้ใช้และรหัสผ่าน'; return; }
+  const users = getUsers();
+  if (!users[u]) { err.textContent = 'ไม่พบชื่อผู้ใช้นี้'; return; }
+  if (users[u].pass !== btoa(p)) { err.textContent = 'รหัสผ่านไม่ถูกต้อง'; return; }
+  loginAs(u);
+}
+
+function doRegister() {
+  const u  = document.getElementById('regUser').value.trim();
+  const p  = document.getElementById('regPass').value;
+  const p2 = document.getElementById('regPass2').value;
+  const err = document.getElementById('regErr');
+  if (!u) { err.textContent = 'กรุณากรอกชื่อผู้ใช้'; return; }
+  if (p.length < 4) { err.textContent = 'รหัสผ่านต้องมีอย่างน้อย 4 ตัว'; return; }
+  if (p !== p2) { err.textContent = 'รหัสผ่านไม่ตรงกัน'; return; }
+  const users = getUsers();
+  if (users[u]) { err.textContent = 'ชื่อผู้ใช้นี้ถูกใช้แล้ว'; return; }
+  users[u] = { pass: btoa(p), created: Date.now() };
+  saveUsers(users);
+  loginAs(u);
+}
+
+function loginAs(u) {
+  currentUser = u;
+  localStorage.setItem('sched_session', u);
+  // load events
+  const saved = loadUserEvents(u);
+  if (saved) { events = saved; }
+  else { initSamples(); }
+
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('appShell').style.display    = 'flex';
+  document.getElementById('userLabel').textContent     = u;
+  document.getElementById('userAvatar').textContent    = u.charAt(0).toUpperCase();
+  alreadyNotified = {};
+  startNotifLoop();
+  renderAll();
+  scrollToNow();
+}
+
+function doLogout() {
+  if (!confirm('ออกจากระบบ?')) return;
+  currentUser = null;
+  localStorage.removeItem('sched_session');
+  events = [];
+  if (notifIntervalId) clearInterval(notifIntervalId);
+  document.getElementById('appShell').style.display    = 'none';
+  document.getElementById('loginScreen').style.display = '';
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginErr').textContent = '';
+  renderExistingUsers();
+}
+
+/* ═══════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════ */
 function getMondayOf(d) {
-  const day = new Date(d);
-  const dow = day.getDay();
-  day.setDate(day.getDate() - (dow === 0 ? 6 : dow - 1));
-  day.setHours(0,0,0,0);
-  return day;
+  const day = new Date(d); const dow = day.getDay();
+  day.setDate(day.getDate() - (dow === 0 ? 6 : dow - 1)); day.setHours(0,0,0,0); return day;
 }
 function addDays(d, n) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
 function fmt(d)         { return d.toISOString().split('T')[0]; }
@@ -430,71 +585,171 @@ function fmtTime(s)     { if (!s) return ''; const [h,m] = s.split(':'); return 
 function parseMin(s)    { if (!s) return 0; const [h,m] = s.split(':').map(Number); return h*60+m; }
 function uid()          { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
 function addMins(t, m)  {
-  const [h, mn] = t.split(':').map(Number);
-  const tot = h*60 + mn + m;
+  const [h, mn] = t.split(':').map(Number); const tot = h*60+mn+m;
   return `${String(Math.floor(tot/60)%24).padStart(2,'0')}:${String(tot%60).padStart(2,'0')}`;
 }
 function hexBright(hex) {
-  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
-  return 0.299*r + 0.587*g + 0.114*b;
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return 0.299*r+0.587*g+0.114*b;
 }
 
-/* ── sample data ── */
+/* ═══════════════════════════════════════════
+   SAMPLE DATA
+═══════════════════════════════════════════ */
 function initSamples() {
   const add = n => fmt(addDays(getMondayOf(new Date()), n));
   events = [
-    {id:uid(), title:'Math Class',      cat:'study', date:add(0), start:'08:00', end:'10:00', desc:'ห้อง 301',      color:'#007aff'},
-    {id:uid(), title:'Coding Study',    cat:'study', date:add(0), start:'14:00', end:'16:00', desc:'JavaScript ES6', color:'#5856d6'},
-    {id:uid(), title:'Workout',         cat:'other', date:add(0), start:'17:00', end:'18:30', desc:'Gym',            color:'#34c759'},
-    {id:uid(), title:'Physics Tutor',   cat:'tutor', date:add(1), start:'18:00', end:'20:00', desc:'',               color:'#af52de'},
-    {id:uid(), title:'Project Meeting', cat:'work',  date:add(2), start:'10:00', end:'11:00', desc:'Zoom call',      color:'#ff9500'},
-    {id:uid(), title:'English Class',   cat:'study', date:add(2), start:'13:00', end:'14:00', desc:'',               color:'#30b0c7'},
-    {id:uid(), title:'Chemistry Lab',   cat:'study', date:add(3), start:'08:00', end:'11:00', desc:'Lab 2',          color:'#007aff'},
-    {id:uid(), title:'Team Meeting',    cat:'meet',  date:add(4), start:'14:00', end:'15:00', desc:'',               color:'#34c759'},
-    {id:uid(), title:'Weekend Study',   cat:'study', date:add(5), start:'09:00', end:'12:00', desc:'',               color:'#5856d6'},
+    {id:uid(), title:'Math Class',      cat:'study', date:add(0), start:'08:00', end:'10:00', desc:'ห้อง 301',      color:'#007aff', important:false, notifyBefore:15},
+    {id:uid(), title:'Coding Study',    cat:'study', date:add(0), start:'14:00', end:'16:00', desc:'JavaScript ES6', color:'#5856d6', important:false, notifyBefore:15},
+    {id:uid(), title:'Workout',         cat:'other', date:add(0), start:'17:00', end:'18:30', desc:'Gym',            color:'#34c759', important:false, notifyBefore:15},
+    {id:uid(), title:'Physics Tutor',   cat:'tutor', date:add(1), start:'18:00', end:'20:00', desc:'',               color:'#af52de', important:true,  notifyBefore:30},
+    {id:uid(), title:'Project Meeting', cat:'work',  date:add(2), start:'10:00', end:'11:00', desc:'Zoom call',      color:'#ff9500', important:true,  notifyBefore:15},
+    {id:uid(), title:'English Class',   cat:'study', date:add(2), start:'13:00', end:'14:00', desc:'',               color:'#30b0c7', important:false, notifyBefore:15},
+    {id:uid(), title:'Chemistry Lab',   cat:'study', date:add(3), start:'08:00', end:'11:00', desc:'Lab 2',          color:'#007aff', important:false, notifyBefore:15},
+    {id:uid(), title:'Team Meeting',    cat:'meet',  date:add(4), start:'14:00', end:'15:00', desc:'',               color:'#34c759', important:false, notifyBefore:15},
+    {id:uid(), title:'Weekend Study',   cat:'study', date:add(5), start:'09:00', end:'12:00', desc:'',               color:'#5856d6', important:false, notifyBefore:15},
   ];
   save();
 }
-function save() { try { localStorage.setItem('sched_v3', JSON.stringify(events)); } catch(e) {} }
-function load() { try { const d = localStorage.getItem('sched_v3'); if (d) events = JSON.parse(d); else initSamples(); } catch(e) { initSamples(); } }
 
-/* ── scroll to current time (or 8:00) ── */
+function save() {
+  if (!currentUser) return;
+  saveUserEvents(currentUser, events);
+}
+
+/* ═══════════════════════════════════════════
+   NOTIFICATION SYSTEM
+═══════════════════════════════════════════ */
+// Web Audio beep
+function playBeep(urgent) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const times = urgent ? [0, 0.18, 0.36] : [0];
+    times.forEach(t => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = urgent ? 880 : 660;
+      gain.gain.setValueAtTime(0.4, ctx.currentTime + t);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.25);
+      osc.start(ctx.currentTime + t);
+      osc.stop(ctx.currentTime + t + 0.3);
+    });
+  } catch(e) {}
+}
+
+function showToast(title, desc, urgent) {
+  if (!notifEnabled) return;
+  const container = document.getElementById('notifContainer');
+  const el = document.createElement('div');
+  el.className = 'notif-toast' + (urgent ? ' urgent' : '');
+  el.innerHTML = `
+    <div class="notif-icon">${urgent ? '🚨' : '⭐'}</div>
+    <div class="notif-body">
+      <div class="notif-title">${title}</div>
+      <div class="notif-desc">${desc}</div>
+    </div>
+    <button class="notif-close" onclick="this.closest('.notif-toast').remove()">✕</button>
+  `;
+  container.appendChild(el);
+  // auto-remove after 8s
+  setTimeout(() => { el.style.opacity='0'; el.style.transition='opacity .4s'; setTimeout(()=>el.remove(),400); }, 8000);
+  // update dot
+  document.getElementById('notifDot').classList.add('show');
+  playBeep(urgent);
+}
+
+function toggleNotif() {
+  notifEnabled = !notifEnabled;
+  const btn = document.getElementById('notifToggleBtn');
+  btn.textContent = notifEnabled ? '🔔' : '🔕';
+  btn.title = notifEnabled ? 'การแจ้งเตือนเปิดอยู่' : 'การแจ้งเตือนปิดอยู่';
+  document.getElementById('notifDot').classList.remove('show');
+  // clear toasts when disabling
+  if (!notifEnabled) document.getElementById('notifContainer').innerHTML = '';
+  showSystemMsg(notifEnabled ? '🔔 เปิดการแจ้งเตือนแล้ว' : '🔕 ปิดการแจ้งเตือนแล้ว');
+}
+
+function showSystemMsg(msg) {
+  const el = document.createElement('div');
+  el.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surface);color:var(--text);padding:10px 20px;border-radius:20px;font-size:13px;font-weight:500;box-shadow:var(--shadow-lg);z-index:6000;animation:slideIn .3s ease';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .4s';setTimeout(()=>el.remove(),400)},2000);
+}
+
+function startNotifLoop() {
+  if (notifIntervalId) clearInterval(notifIntervalId);
+  checkNotifications();
+  notifIntervalId = setInterval(checkNotifications, 30000); // every 30s
+}
+
+function checkNotifications() {
+  if (!notifEnabled || !currentUser) return;
+  const now     = new Date();
+  const todayStr = fmt(now);
+  const nowMin  = now.getHours() * 60 + now.getMinutes();
+
+  events.forEach(ev => {
+    if (!ev.important) return;
+    if (ev.date < todayStr) return;
+    const startMin = parseMin(ev.start);
+    const diffMin  = (ev.date === todayStr) ? startMin - nowMin : -1;
+
+    // Notify at event time
+    if (ev.date === todayStr && diffMin >= 0 && diffMin <= 1) {
+      const key = ev.id + '_now';
+      if (!alreadyNotified[key] || Date.now() - alreadyNotified[key] > 60000) {
+        alreadyNotified[key] = Date.now();
+        showToast(`🚨 ถึงเวลาแล้ว! ${ev.title}`, `${fmtTime(ev.start)} – ${fmtTime(ev.end)}`, true);
+      }
+    }
+
+    // Notify before
+    const before = ev.notifyBefore || 15;
+    if (ev.date === todayStr && diffMin > 1 && diffMin <= before) {
+      const key = ev.id + '_before';
+      if (!alreadyNotified[key] || Date.now() - alreadyNotified[key] > 60000) {
+        alreadyNotified[key] = Date.now();
+        showToast(`⭐ กิจกรรมสำคัญใน ${diffMin} นาที`, `${ev.title} · ${fmtTime(ev.start)}`, false);
+      }
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════ */
 function scrollToNow() {
   const scroller = document.getElementById('timetableScroll');
   if (!scroller) return;
   const now = new Date();
-  const min = now.getHours() * 60 + now.getMinutes();
-  // scroll so "now" is in the upper third of the 8-hour window
-  const targetPx = (min / 60) * HOUR_PX - HOUR_PX;
+  const targetPx = (now.getHours() * 60 + now.getMinutes()) / 60 * HOUR_PX - HOUR_PX;
   scroller.scrollTop = Math.max(0, targetPx);
 }
 
-/* ── RENDER ALL ── */
 function renderAll() { renderMiniCal(); renderWeek(); renderSidebar(); }
 
-/* ── MINI CALENDAR ── */
 function renderMiniCal() {
   const y = calDate.getFullYear(), m = calDate.getMonth();
   document.getElementById('calTitle').textContent = `${MONTHS_TH[m]} ${y+543}`;
-  const first = new Date(y, m, 1);
-  const last  = new Date(y, m+1, 0);
-  const startDow = first.getDay();
-  const todayStr = fmt(new Date());
+  const first = new Date(y,m,1), last = new Date(y,m+1,0);
+  const startDow = first.getDay(), todayStr = fmt(new Date());
   const evDates  = new Set(events.map(e => e.date));
   let html = DAY_SHORT.map(d => `<div class="cal-day-label">${d}</div>`).join('');
-
   for (let i = 0; i < startDow; i++) {
-    const prev = new Date(y, m, 1 - startDow + i);
+    const prev = new Date(y,m,1-startDow+i);
     html += `<div class="cal-day other-month${evDates.has(fmt(prev))?' has-events':''}">${prev.getDate()}</div>`;
   }
   for (let d = 1; d <= last.getDate(); d++) {
-    const ds = fmt(new Date(y, m, d));
+    const ds = fmt(new Date(y,m,d));
     const cls = ['cal-day', ds===todayStr?'today':'', evDates.has(ds)?'has-events':''].filter(Boolean).join(' ');
     html += `<div class="${cls}" onclick="jumpToDate('${ds}')">${d}</div>`;
   }
-  const rem = (7 - (startDow + last.getDate()) % 7) % 7;
+  const rem = (7-(startDow+last.getDate())%7)%7;
   for (let i = 1; i <= rem; i++) {
-    const nxt = new Date(y, m+1, i);
+    const nxt = new Date(y,m+1,i);
     html += `<div class="cal-day other-month${evDates.has(fmt(nxt))?' has-events':''}">${i}</div>`;
   }
   document.getElementById('calGrid').innerHTML = html;
@@ -503,77 +758,60 @@ function prevMonth() { calDate.setMonth(calDate.getMonth()-1); renderMiniCal(); 
 function nextMonth() { calDate.setMonth(calDate.getMonth()+1); renderMiniCal(); }
 function jumpToDate(ds) { weekStart = getMondayOf(new Date(ds)); renderAll(); scrollToNow(); }
 
-/* ── SIDEBAR ── */
 function renderSidebar() {
-  // categories
   let html = `<div class="cat-item${!filterCat?' active':''}" onclick="setCat(null)">
-    <span class="cat-dot" style="background:var(--accent)"></span>
-    <span>ทั้งหมด</span>
-    <span class="cat-count">${events.length}</span>
-  </div>`;
+    <span class="cat-dot" style="background:var(--accent)"></span><span>ทั้งหมด</span>
+    <span class="cat-count">${events.length}</span></div>`;
   CATS.forEach(c => {
-    const cnt = events.filter(e => e.cat === c.id).length;
+    const cnt = events.filter(e=>e.cat===c.id).length;
     html += `<div class="cat-item${filterCat===c.id?' active':''}" onclick="setCat('${c.id}')">
       <span class="cat-dot" style="background:${c.color}"></span>
-      <span>${c.icon} ${c.label}</span>
-      <span class="cat-count">${cnt}</span>
-    </div>`;
+      <span>${c.icon} ${c.label}</span><span class="cat-count">${cnt}</span></div>`;
   });
   document.getElementById('catList').innerHTML = html;
 
-  // upcoming
-  const now = new Date(); const todayStr = fmt(now); const nowMin = now.getHours()*60+now.getMinutes();
+  const now = new Date(), todayStr = fmt(now), nowMin = now.getHours()*60+now.getMinutes();
   const upcoming = events.filter(e => {
     if (e.date < todayStr) return false;
-    if (e.date === todayStr && parseMin(e.end) <= nowMin) return false;
+    if (e.date===todayStr && parseMin(e.end)<=nowMin) return false;
     return true;
-  }).sort((a,b) => a.date!==b.date ? (a.date>b.date?1:-1) : parseMin(a.start)-parseMin(b.start)).slice(0,5);
+  }).sort((a,b)=>a.date!==b.date?(a.date>b.date?1:-1):parseMin(a.start)-parseMin(b.start)).slice(0,5);
 
-  if (!upcoming.length) {
-    document.getElementById('upcomingList').innerHTML = `<div class="empty-up">ไม่มีกิจกรรมที่จะมาถึง</div>`;
-    return;
-  }
+  if (!upcoming.length) { document.getElementById('upcomingList').innerHTML=`<div class="empty-up">ไม่มีกิจกรรมที่จะมาถึง</div>`; return; }
   document.getElementById('upcomingList').innerHTML = upcoming.map(ev => {
-    const cat = CATS.find(c => c.id === ev.cat) || CATS[4];
+    const cat = CATS.find(c=>c.id===ev.cat)||CATS[4];
     return `<div class="upcoming-item" style="border-left-color:${ev.color}" onclick='openEdit("${ev.id}")'>
-      <div class="upcoming-item-title">${cat.icon} ${ev.title}</div>
+      <div class="upcoming-item-title">${cat.icon} ${ev.title}${ev.important?' <span class="star-badge">⭐</span>':''}</div>
       <div class="upcoming-item-time">${ev.date} · ${fmtTime(ev.start)}–${fmtTime(ev.end)}</div>
     </div>`;
   }).join('');
 }
 function setCat(c) { filterCat = c; renderAll(); }
 
-/* ── WEEK TIMETABLE ── */
 function renderWeek() {
-  const q = (document.getElementById('searchInput')||{}).value || '';
+  const q  = (document.getElementById('searchInput')||{}).value || '';
   const sq = q.toLowerCase();
-  const days = [0,1,2,3,4,5,6].map(i => addDays(weekStart, i));
+  const days = [0,1,2,3,4,5,6].map(i => addDays(weekStart,i));
   const todayStr = fmt(new Date());
 
-  // week label
   const opts = {month:'short'};
   const s = days[0], e = days[6];
   document.getElementById('weekLabel').textContent =
     `${s.getDate()} ${s.toLocaleDateString('th-TH',opts)} – ${e.getDate()} ${e.toLocaleDateString('th-TH',opts)} ${e.getFullYear()+543}`;
 
-  // time column (24 hours × HOUR_PX)
   let tcHtml = '';
-  for (let h = 0; h < TOTAL_H; h++) {
-    tcHtml += `<div class="time-label" style="height:${HOUR_PX}px">${String(h).padStart(2,'0')}:00</div>`;
-  }
+  for (let h=0; h<TOTAL_H; h++) tcHtml += `<div class="time-label" style="height:${HOUR_PX}px">${String(h).padStart(2,'0')}:00</div>`;
   document.getElementById('timeCol').innerHTML = tcHtml;
 
-  // days grid
   let dgHtml = '';
   days.forEach(day => {
-    const ds = fmt(day);
-    const isToday = ds === todayStr;
+    const ds = fmt(day), isToday = ds===todayStr;
     const dayEvs = events.filter(ev => {
-      if (ev.date !== ds) return false;
-      if (filterCat && ev.cat !== filterCat) return false;
+      if (ev.date!==ds) return false;
+      if (filterCat && ev.cat!==filterCat) return false;
       if (sq && !ev.title.toLowerCase().includes(sq)) return false;
       return true;
-    }).sort((a,b) => parseMin(a.start) - parseMin(b.start));
+    }).sort((a,b)=>parseMin(a.start)-parseMin(b.start));
 
     dgHtml += `<div class="day-col">
       <div class="day-header${isToday?' today-col':''}">
@@ -582,51 +820,68 @@ function renderWeek() {
       </div>
       <div class="day-body" style="height:${TOTAL_H*HOUR_PX}px" onclick="clickDayBody(event,'${ds}')">`;
 
-    // hour lines
-    for (let h = 0; h < TOTAL_H; h++) {
-      dgHtml += `<div class="hour-line" style="top:${h*HOUR_PX}px"></div>`;
-    }
-
-    // now indicator
+    for (let h=0; h<TOTAL_H; h++) dgHtml += `<div class="hour-line" style="top:${h*HOUR_PX}px"></div>`;
     if (isToday) {
-      const now = new Date(); const min = now.getHours()*60 + now.getMinutes();
+      const now=new Date(), min=now.getHours()*60+now.getMinutes();
       dgHtml += `<div class="now-line" id="nowLine" style="top:${(min/60)*HOUR_PX}px"></div>`;
     }
 
-    // event blocks
     dayEvs.forEach(ev => {
-      const topPx  = (parseMin(ev.start) / 60) * HOUR_PX;
-      const hPx    = Math.max((parseMin(ev.end) - parseMin(ev.start)) / 60 * HOUR_PX, 24);
-      const cat    = CATS.find(c => c.id === ev.cat) || CATS[4];
-      const bright = hexBright(ev.color);
-      const fg     = bright > 150 ? 'rgba(0,0,0,.85)' : '#fff';
-      dgHtml += `<div class="event-block" style="top:${topPx}px;height:${hPx}px;background:${ev.color};color:${fg}"
+      const topPx = (parseMin(ev.start)/60)*HOUR_PX;
+      const hPx   = Math.max((parseMin(ev.end)-parseMin(ev.start))/60*HOUR_PX, 24);
+      const cat   = CATS.find(c=>c.id===ev.cat)||CATS[4];
+      const bright= hexBright(ev.color||'#007aff');
+      const fg    = bright>150?'rgba(0,0,0,.85)':'#fff';
+      const impCls= ev.important?' important-event':'';
+      dgHtml += `<div class="event-block${impCls}" style="top:${topPx}px;height:${hPx}px;background:${ev.color};color:${fg}"
         onclick='openEdit("${ev.id}");event.stopPropagation()'>
-        <div class="event-title">${cat.icon} ${ev.title}</div>
+        <div class="event-title">${ev.important?'⭐ ':''}${cat.icon} ${ev.title}</div>
         <div class="event-time">${fmtTime(ev.start)}–${fmtTime(ev.end)}</div>
       </div>`;
     });
-
     dgHtml += `</div></div>`;
   });
   document.getElementById('daysGrid').innerHTML = dgHtml;
 }
 
-function prevWeek() { weekStart = addDays(weekStart,-7); renderAll(); }
-function nextWeek() { weekStart = addDays(weekStart, 7); renderAll(); }
-function goToday()  { weekStart = getMondayOf(new Date()); calDate = new Date(); renderAll(); scrollToNow(); }
+function prevWeek() { weekStart=addDays(weekStart,-7); renderAll(); }
+function nextWeek() { weekStart=addDays(weekStart, 7); renderAll(); }
+function goToday()  { weekStart=getMondayOf(new Date()); calDate=new Date(); renderAll(); scrollToNow(); }
 
 function clickDayBody(e, ds) {
   if (e.target.closest('.event-block')) return;
-  const rect = e.currentTarget.getBoundingClientRect();
-  const y    = e.clientY - rect.top;
-  const min  = Math.round((y / HOUR_PX) * 60 / 15) * 15;
-  const h = Math.floor(min/60), m = min%60;
-  const ts = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
-  openAddModal(ds, ts);
+  const rect=e.currentTarget.getBoundingClientRect(), y=e.clientY-rect.top;
+  const min=Math.round((y/HOUR_PX)*60/15)*15, h=Math.floor(min/60), m=min%60;
+  openAddModal(ds, `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`);
 }
 
-/* ── MODAL ── */
+/* ═══════════════════════════════════════════
+   MODAL – IMPORTANT TOGGLE
+═══════════════════════════════════════════ */
+let _importantOn = false;
+let _notifyBefore = 15;
+
+function setImportant(val) {
+  _importantOn = val;
+  document.getElementById('importantToggle').className = 'toggle-switch' + (val?' on':'');
+  document.getElementById('importantLabel').textContent = val ? 'รายการสำคัญ (เปิด) ⭐' : 'ทำเครื่องหมายเป็นรายการสำคัญ ⭐';
+  document.getElementById('notifyBeforeWrap').style.display = val ? '' : 'none';
+  if (val) renderNotifyChips();
+}
+
+function toggleImportant() { setImportant(!_importantOn); }
+
+function renderNotifyChips() {
+  document.getElementById('notifyBeforeRow').innerHTML = NOTIFY_OPTIONS.map(m =>
+    `<div class="notify-chip${_notifyBefore===m?' selected':''}" onclick="pickNotify(${m})">${m} นาที</div>`
+  ).join('');
+}
+
+function pickNotify(m) { _notifyBefore = m; renderNotifyChips(); }
+
+/* ═══════════════════════════════════════════
+   MODAL – OPEN / SAVE / DELETE
+═══════════════════════════════════════════ */
 function openAddModal(date, startTime) {
   editId = null;
   document.getElementById('modalTitle').textContent  = 'เพิ่มกิจกรรม';
@@ -634,14 +889,16 @@ function openAddModal(date, startTime) {
   document.getElementById('fTitle').value = '';
   document.getElementById('fDate').value  = date || fmt(new Date());
   document.getElementById('fStart').value = startTime || '09:00';
-  document.getElementById('fEnd').value   = startTime ? addMins(startTime, 60) : '10:00';
+  document.getElementById('fEnd').value   = startTime ? addMins(startTime,60) : '10:00';
   document.getElementById('fDesc').value  = '';
+  setImportant(false); _notifyBefore = 15;
   renderCatSelect('study');
   renderColorSelect('#007aff');
   showModal();
 }
+
 function openEdit(id) {
-  const ev = events.find(e => e.id === id); if (!ev) return;
+  const ev = events.find(e=>e.id===id); if (!ev) return;
   editId = id;
   document.getElementById('modalTitle').textContent  = 'แก้ไขกิจกรรม';
   document.getElementById('deleteBtn').style.display = 'block';
@@ -649,39 +906,42 @@ function openEdit(id) {
   document.getElementById('fDate').value  = ev.date;
   document.getElementById('fStart').value = ev.start;
   document.getElementById('fEnd').value   = ev.end;
-  document.getElementById('fDesc').value  = ev.desc || '';
+  document.getElementById('fDesc').value  = ev.desc||'';
+  _notifyBefore = ev.notifyBefore || 15;
+  setImportant(!!ev.important);
   renderCatSelect(ev.cat);
   renderColorSelect(ev.color);
   showModal();
 }
+
 function renderCatSelect(sel) {
   document.getElementById('catSelect').innerHTML = CATS.map(c =>
     `<div class="cat-option${c.id===sel?' selected':''}" onclick="pickCat('${c.id}')">${c.icon}<br><span style="font-size:10px">${c.label}</span></div>`
   ).join('');
 }
 function pickCat(id) { renderCatSelect(id); }
+
 function renderColorSelect(sel) {
   document.getElementById('colorSelect').innerHTML = COLORS.map(c =>
     `<div class="color-dot${c===sel?' selected':''}" style="background:${c}" onclick="pickColor('${c}')"></div>`
   ).join('');
 }
 function pickColor(c) { renderColorSelect(c); }
+
 function selectedCat() {
-  const opts = document.querySelectorAll('.cat-option');
-  const sel  = document.querySelector('.cat-option.selected');
+  const opts=document.querySelectorAll('.cat-option'), sel=document.querySelector('.cat-option.selected');
   return sel ? CATS[Array.from(opts).indexOf(sel)].id : 'other';
 }
 function selectedColor() {
-  const sel = document.querySelector('.color-dot.selected');
+  const sel=document.querySelector('.color-dot.selected');
   return sel ? sel.style.background : '#007aff';
 }
+
 function saveEvent() {
   const title = document.getElementById('fTitle').value.trim();
   if (!title) {
-    const inp = document.getElementById('fTitle');
-    inp.focus(); inp.style.borderColor = 'var(--red)';
-    setTimeout(() => inp.style.borderColor = '', 1500);
-    return;
+    const inp=document.getElementById('fTitle'); inp.focus(); inp.style.borderColor='var(--red)';
+    setTimeout(()=>inp.style.borderColor='',1500); return;
   }
   const ev = {
     id:    editId || uid(),
@@ -692,40 +952,64 @@ function saveEvent() {
     end:   document.getElementById('fEnd').value,
     desc:  document.getElementById('fDesc').value,
     color: selectedColor(),
+    important:    _importantOn,
+    notifyBefore: _notifyBefore,
   };
-  if (editId) { const i = events.findIndex(e => e.id === editId); if (i >= 0) events[i] = ev; }
+  if (editId) { const i=events.findIndex(e=>e.id===editId); if (i>=0) events[i]=ev; }
   else events.push(ev);
+  // reset notified cache for this event so updated settings take effect
+  delete alreadyNotified[ev.id+'_now'];
+  delete alreadyNotified[ev.id+'_before'];
   save(); closeModal(); renderAll();
 }
-function deleteCurrentEvent() { closeModal(); deleteTarget = editId; document.getElementById('confirmOverlay').classList.add('show'); }
-function closeConfirm()       { document.getElementById('confirmOverlay').classList.remove('show'); deleteTarget = null; }
-function confirmDelete()      { if (deleteTarget) { events = events.filter(e => e.id !== deleteTarget); save(); renderAll(); } closeConfirm(); }
-function showModal()          { document.getElementById('eventOverlay').classList.add('show'); }
-function closeModal()         { document.getElementById('eventOverlay').classList.remove('show'); editId = null; }
-function closeIfOverlay(e)    { if (e.target === document.getElementById('eventOverlay')) closeModal(); }
 
+function deleteCurrentEvent() {
+  deleteTarget = editId;
+  closeModal();
+  document.getElementById('confirmOverlay').classList.add('show');
+}
+function closeConfirm()  { document.getElementById('confirmOverlay').classList.remove('show'); deleteTarget=null; }
+function confirmDelete() {
+  if (deleteTarget) { events=events.filter(e=>e.id!==deleteTarget); save(); renderAll(); }
+  closeConfirm();
+}
+function showModal()       { document.getElementById('eventOverlay').classList.add('show'); }
+function closeModal()      { document.getElementById('eventOverlay').classList.remove('show'); editId=null; }
+function closeIfOverlay(e) { if (e.target===document.getElementById('eventOverlay')) closeModal(); }
+
+/* ═══════════════════════════════════════════
+   DARK / SEARCH
+═══════════════════════════════════════════ */
 function toggleDark() {
   document.body.classList.toggle('dark');
-  document.getElementById('darkToggle').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+  document.getElementById('darkToggle').textContent = document.body.classList.contains('dark')?'☀️':'🌙';
 }
 function toggleSearch() {
-  const w = document.getElementById('searchWrap');
-  if (w.style.display === 'none') { w.style.display = 'block'; setTimeout(() => document.getElementById('searchInput').focus(), 50); }
-  else { w.style.display = 'none'; document.getElementById('searchInput').value = ''; renderAll(); }
+  const w=document.getElementById('searchWrap');
+  if (w.style.display==='none') { w.style.display='block'; setTimeout(()=>document.getElementById('searchInput').focus(),50); }
+  else { w.style.display='none'; document.getElementById('searchInput').value=''; renderAll(); }
 }
 
-/* ── INIT ── */
-load();
-renderAll();
-scrollToNow();
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+(function init() {
+  // Restore session
+  const saved = localStorage.getItem('sched_session');
+  if (saved && getUsers()[saved]) {
+    loginAs(saved);
+  } else {
+    renderExistingUsers();
+  }
 
-// update now-line every 30 s
-setInterval(() => {
-  document.querySelectorAll('#nowLine').forEach(el => {
-    const now = new Date(); const min = now.getHours()*60 + now.getMinutes();
-    el.style.top = (min/60 * HOUR_PX) + 'px';
-  });
-}, 30000);
+  // update now-line every 30s
+  setInterval(() => {
+    document.querySelectorAll('#nowLine').forEach(el => {
+      const now=new Date(), min=now.getHours()*60+now.getMinutes();
+      el.style.top=(min/60*HOUR_PX)+'px';
+    });
+  }, 30000);
+})();
 </script>
 </body>
 </html>
