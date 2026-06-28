@@ -250,6 +250,17 @@ input,select,textarea{font-family:inherit}
 .notif-dot{position:absolute;top:3px;right:3px;width:8px;height:8px;border-radius:50%;background:var(--red);border:2px solid var(--surface);display:none}
 .notif-dot.show{display:block}
 
+
+/* DATE SLOTS */
+.slot-row{
+  display:grid;grid-template-columns:1fr 90px 90px 32px;gap:6px;align-items:center;
+  background:var(--surface2);border-radius:var(--r-sm);padding:8px 10px;margin-bottom:6px;
+}
+.slot-row input{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xs);padding:6px 8px;font-size:12px;color:var(--text);outline:none;transition:border-color .2s;width:100%}
+.slot-row input:focus{border-color:var(--accent)}
+.slot-remove{background:rgba(255,59,48,.12);color:var(--red);border:none;border-radius:var(--r-xs);width:28px;height:28px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
+.slot-remove:hover{background:rgba(255,59,48,.25)}
+.slot-add-hint{font-size:11px;color:var(--text3);text-align:center;padding:6px 0}
 .empty-up{color:var(--text3);font-size:12px;text-align:center;padding:12px 0}
 
 @media(max-width:900px){.sidebar{display:none}}
@@ -390,20 +401,16 @@ input,select,textarea{font-family:inherit}
       <label class="form-label">ประเภท</label>
       <div class="cat-select" id="catSelect"></div>
     </div>
-    <div class="form-group">
-      <label class="form-label">วันที่</label>
-      <input class="form-input" type="date" id="fDate">
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">เวลาเริ่ม</label>
-        <input class="form-input" type="time" id="fStart" value="09:00">
+    <div class="form-group" id="dateSlotsGroup">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <label class="form-label" style="margin:0">วันที่ &amp; เวลา</label>
+        <button type="button" onclick="addDateSlot()" id="addSlotBtn" style="background:var(--grad);color:#fff;border:none;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;cursor:pointer">+ เพิ่มวัน/เวลา</button>
       </div>
-      <div class="form-group">
-        <label class="form-label">เวลาจบ</label>
-        <input class="form-input" type="time" id="fEnd" value="10:00">
-      </div>
+      <div id="dateSlotList"></div>
     </div>
+    <input type="hidden" id="fDate">
+    <input type="hidden" id="fStart">
+    <input type="hidden" id="fEnd">
     <div class="form-group">
       <label class="form-label">รายละเอียด</label>
       <textarea class="form-input" id="fDesc" rows="2" placeholder="รายละเอียดเพิ่มเติม..."></textarea>
@@ -882,18 +889,55 @@ function pickNotify(m) { _notifyBefore = m; renderNotifyChips(); }
 /* ═══════════════════════════════════════════
    MODAL – OPEN / SAVE / DELETE
 ═══════════════════════════════════════════ */
+/* ── date slots state ── */
+let _slots = []; // [{date,start,end}]
+
+function renderSlotList() {
+  const list = document.getElementById('dateSlotList');
+  const btn  = document.getElementById('addSlotBtn');
+  if (!list) return;
+  // hide add button when editing (single-slot mode)
+  btn.style.display = editId ? 'none' : '';
+  if (!_slots.length) {
+    list.innerHTML = '<div class="slot-add-hint">กด "+ เพิ่มวัน/เวลา" เพื่อเลือกวันและเวลา</div>';
+    return;
+  }
+  list.innerHTML = _slots.map((s,i) => `
+    <div class="slot-row">
+      <input type="date" value="${s.date}" oninput="_slots[${i}].date=this.value">
+      <input type="time" value="${s.start}" oninput="_slots[${i}].start=this.value">
+      <input type="time" value="${s.end}"   oninput="_slots[${i}].end=this.value">
+      ${_slots.length>1 ? `<button class="slot-remove" onclick="removeSlot(${i})">✕</button>` : '<div></div>'}
+    </div>`).join('');
+}
+
+function addDateSlot(date, start, end) {
+  const last = _slots[_slots.length-1];
+  _slots.push({
+    date:  date  || (last ? last.date : fmt(new Date())),
+    start: start || (last ? last.start : '09:00'),
+    end:   end   || (last ? last.end   : '10:00'),
+  });
+  renderSlotList();
+}
+
+function removeSlot(i) {
+  if (_slots.length <= 1) return;
+  _slots.splice(i,1);
+  renderSlotList();
+}
+
 function openAddModal(date, startTime) {
   editId = null;
   document.getElementById('modalTitle').textContent  = 'เพิ่มกิจกรรม';
   document.getElementById('deleteBtn').style.display = 'none';
   document.getElementById('fTitle').value = '';
-  document.getElementById('fDate').value  = date || fmt(new Date());
-  document.getElementById('fStart').value = startTime || '09:00';
-  document.getElementById('fEnd').value   = startTime ? addMins(startTime,60) : '10:00';
   document.getElementById('fDesc').value  = '';
+  _slots = [{date: date||fmt(new Date()), start: startTime||'09:00', end: startTime?addMins(startTime,60):'10:00'}];
   setImportant(false); _notifyBefore = 15;
   renderCatSelect('study');
   renderColorSelect('#007aff');
+  renderSlotList();
   showModal();
 }
 
@@ -903,14 +947,13 @@ function openEdit(id) {
   document.getElementById('modalTitle').textContent  = 'แก้ไขกิจกรรม';
   document.getElementById('deleteBtn').style.display = 'block';
   document.getElementById('fTitle').value = ev.title;
-  document.getElementById('fDate').value  = ev.date;
-  document.getElementById('fStart').value = ev.start;
-  document.getElementById('fEnd').value   = ev.end;
   document.getElementById('fDesc').value  = ev.desc||'';
+  _slots = [{date: ev.date, start: ev.start, end: ev.end}];
   _notifyBefore = ev.notifyBefore || 15;
   setImportant(!!ev.important);
   renderCatSelect(ev.cat);
   renderColorSelect(ev.color);
+  renderSlotList();
   showModal();
 }
 
@@ -943,24 +986,37 @@ function saveEvent() {
     const inp=document.getElementById('fTitle'); inp.focus(); inp.style.borderColor='var(--red)';
     setTimeout(()=>inp.style.borderColor='',1500); return;
   }
-  const ev = {
-    id:    editId || uid(),
+  if (!_slots.length || _slots.some(s=>!s.date)) {
+    showSystemMsg('⚠️ กรุณาเลือกวันที่อย่างน้อย 1 วัน'); return;
+  }
+
+  const base = {
     title,
-    cat:   selectedCat(),
-    date:  document.getElementById('fDate').value,
-    start: document.getElementById('fStart').value,
-    end:   document.getElementById('fEnd').value,
-    desc:  document.getElementById('fDesc').value,
-    color: selectedColor(),
-    important:    _importantOn,
-    notifyBefore: _notifyBefore,
+    cat:         selectedCat(),
+    desc:        document.getElementById('fDesc').value,
+    color:       selectedColor(),
+    important:   _importantOn,
+    notifyBefore:_notifyBefore,
   };
-  if (editId) { const i=events.findIndex(e=>e.id===editId); if (i>=0) events[i]=ev; }
-  else events.push(ev);
-  // reset notified cache for this event so updated settings take effect
-  delete alreadyNotified[ev.id+'_now'];
-  delete alreadyNotified[ev.id+'_before'];
+
+  if (editId) {
+    // single-slot edit
+    const slot = _slots[0];
+    const ev = { ...base, id: editId, date: slot.date, start: slot.start, end: slot.end };
+    const i = events.findIndex(e=>e.id===editId);
+    if (i>=0) events[i] = ev;
+    delete alreadyNotified[editId+'_now'];
+    delete alreadyNotified[editId+'_before'];
+  } else {
+    // multi-slot add
+    _slots.forEach(slot => {
+      const newId = uid();
+      events.push({ ...base, id: newId, date: slot.date, start: slot.start, end: slot.end });
+    });
+  }
+
   save(); closeModal(); renderAll();
+  if (!editId && _slots.length > 1) showSystemMsg(`✅ เพิ่ม ${_slots.length} กิจกรรมแล้ว`);
 }
 
 function deleteCurrentEvent() {
